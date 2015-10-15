@@ -10,6 +10,17 @@ class LaneStore {
     this.lanes = [];
   }
 
+  findLane(id) {
+    const lanes = this.lanes;
+    const laneIndex = lanes.findIndex(lane => lane.id === id);
+
+    if (laneIndex < 0) {
+      console.warn('Failed to find lane', lanes, id);
+    }
+
+    return laneIndex;
+  }
+
   create(lane) {
     const lanes = this.lanes;
 
@@ -21,15 +32,30 @@ class LaneStore {
     });
   }
 
-  findLane(id) {
+  update({id, name}) {
     const lanes = this.lanes;
-    const laneIndex = lanes.findIndex(lane => lane.id === id);
+    const targetId = this.findLane(id);
 
-    if (laneIndex < 0) {
-      console.warn('Failed to find lane', lanes, id);
+    if (targetId < 0) {
+      return;
     }
 
-    return laneIndex;
+    lanes[targetId].name = name;
+
+    this.setState({lanes});
+  }
+
+  delete(id) {
+    const lanes = this.lanes;
+    const targetId = this.findLane(id);
+
+    if (targetId < 0) {
+      return;
+    }
+
+    this.setState({
+      lanes: lanes.slice(0, targetId).concat(lanes.slice(targetId + 1))
+    });
   }
 
   attachToLane({laneId, noteId}) {
