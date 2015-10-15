@@ -1,6 +1,7 @@
 import uuid from 'node-uuid';
 import alt from '../libs/alt';
 import LaneActions from '../actions/LaneActions';
+import NoteStore from '../stores/NoteStore';
 
 class LaneStore {
   constructor() {
@@ -18,6 +19,17 @@ class LaneStore {
     this.setState({
       lanes: lanes.concat(lane)
     });
+  }
+
+  findLane(id) {
+    const lanes = this.lanes;
+    const laneIndex = lanes.findIndex(lane => lane.id === id);
+
+    if (laneIndex < 0) {
+      console.warn('Failed to find lane', lanes, id);
+    }
+
+    return laneIndex;
   }
 
   attachToLane({laneId, noteId}) {
@@ -45,7 +57,25 @@ class LaneStore {
     }
   }
 
-  findLane(laneId) {
+  detachFromLane({laneId, noteId}) {
+    const lanes = this.lanes;
+    const targetId = this.findLane(laneId);
+
+    if (targetId < 0) {
+      return;
+    }
+
+    const lane = lanes[lane];
+    const notes = lane.notes;
+    const removeIndex = notes.indexOf(noteId);
+
+    if (removeIndex !== -1) {
+      lane.notes = notes.slice(0, removeIndex).concat(notes.slice(removeIndex + 1));
+
+      this.setState({lanes});
+    } else {
+      console.warn('Failed to remove note from a lane as it didn\'t exist', lanes);
+    }
   }
 }
 
