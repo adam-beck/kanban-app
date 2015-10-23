@@ -40,19 +40,25 @@ const common = {
   ]
 };
 
-if (TARGET === 'start' || !TARGET) {
-  module.exports = merge(common, {
-    devtool: 'eval-source-map',
-    devServer: {
-      historyApiFallback: true,
-      hot: true,
-      inline: true,
-      progress: true,
-      port: 3000
-    },
-    plugins: [
-      new webpack.HotModuleReplacementPlugin()
-    ]
-  });
-}
+const buildConfiguration = function() {
+  var config = {};
+  if (TARGET === 'start' || !TARGET) {
+    config = merge(common, {
+      devtool: 'eval-source-map',
+      devServer: {
+        historyApiFallback: true,
+        hot: true,
+        inline: true,
+        progress: true,
+        port: 3000
+      },
+      plugins: [
+        new webpack.HotModuleReplacementPlugin()
+      ]
+    });
+  }
 
+  return config;
+};
+
+export default buildConfiguration();
