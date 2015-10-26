@@ -2,15 +2,14 @@ import AltContainer from 'alt/AltContainer';
 import React from 'react';
 import Notes from './Notes.jsx';
 import NoteActions from '../actions/NoteActions';
-import LaneActions from '../actions/LaneActions'
 import NoteStore from '../stores/NoteStore';
+import LaneActions from '../actions/LaneActions'
 import Editable from '../components/Editable.jsx';
 import {DropTarget} from 'react-dnd';
 import ItemTypes from '../constants/itemTypes';
 
 const noteTarget = {
   hover(targetProps, monitor) {
-    const targetId = targetProps.lane.id;
     const sourceProps = monitor.getItem();
     const sourceId = sourceProps.id;
 
@@ -62,7 +61,7 @@ class Lane extends React.Component {
   render() {
     const {connectDropTarget, lane, ...props} = this.props;
 
-    return connectDropTarget((
+    return connectDropTarget(
       <div {...props}>
         <div className="lane-header">
           <Editable className="lane-name" value={lane.name}
@@ -80,7 +79,7 @@ class Lane extends React.Component {
           <Notes onEdit={this.editNote} onDelete={this.deleteNote} />
         </AltContainer>
       </div>
-    ));
+    );
   }
 }
 

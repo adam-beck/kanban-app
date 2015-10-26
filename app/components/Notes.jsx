@@ -1,7 +1,7 @@
 import React from 'react';
 import Editable from './Editable.jsx';
-import Note from './Note.jsx';
 import LaneActions from '../actions/LaneActions';
+import Note from './Note.jsx';
 
 class Notes extends React.Component {
   constructor(props) {
